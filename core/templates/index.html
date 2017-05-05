@@ -1,0 +1,103 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>音乐地图</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="{% static 'css/index.css'%}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body  style="padding-top:50px;">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="exampleModalLabel">在此添加音乐</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/music/" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-2">
+                    <label for="recipient-name" class="control-label">经度:</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" name="lng" class="form-control" id="lng" readonly>
+                  </div>
+                  <div class="col-md-2">
+                    <label for="recipient-name" class="control-label">纬度:</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" name="lat" class="form-control" id="lat" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="recipient-name" class="control-label">位置:</label>
+                <input type="text" class="form-control" id="location" disabled>
+              </div>
+              <div><h4>由于网易去音乐有些歌有版权保护,所以请先试试能不能播放.</h4></div>
+              <div id="player">
+              </div>
+              <div class="form-group">
+                <label for="recipient-name" class="control-label">网易云音乐链接:</label>
+                <input type="text" name="musicurl" class="form-control" id="music-url" onchange="checkurl()" required>
+              </div>
+              <div class="form-group">
+                <label for="recipient-name" class="control-label">邮箱:</label>
+                <input type="email" name="uploaderemail" class="form-control" id="music-url" onchange="checkurl()" required>
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="control-label">想说的话（为什么把这首歌放在这个地方）:</label>
+                <textarea class="form-control" name="descript" id="text"></textarea>
+              </div>
+              <input id="musicid" type="hidden" name="id" value="value">
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="提交"/>
+              </div>
+
+            </form>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Send message</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">MUSIC MAP</a>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/admin">管理员登录</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Map Content -->
+    <div id="musicmap"></div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- BaiduMap API -->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xgQomeXQjCUiy9ByA6Vbsp9vRvSwGxhn"></script>
+
+    <script type="text/javascript" src="{% static 'js/index.js' %}"> </script>
+  </body>
+</html>

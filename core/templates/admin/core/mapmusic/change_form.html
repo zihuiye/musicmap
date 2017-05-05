@@ -1,0 +1,42 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% block after_field_sets %}
+<div id="inspectmap" style="height:500px;width:800px;"></div>
+{% endblock %}
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+<!-- BaiduMap API -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xgQomeXQjCUiy9ByA6Vbsp9vRvSwGxhn"></script>
+<script type="text/javascript">
+var map = new BMap.Map("inspectmap");
+map.centerAndZoom(new BMap.Point($(".field-lng > p").text(),$(".field-lat > p").text()), 11);  // 初始化地图,设置中心点坐标和地图级别
+map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+function addMusicMarker(id,lat,lng,email,datetime,text){
+  var sContent =
+    "<div>"+
+    "<h5>"+"上传者："+email+"</h5>"+
+    "<h5>"+"上传时间："+datetime+"</h5>"+
+    "<p>"+"想说的话："+text+"</p>"+
+  	'<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=380 height=86 src="//music.163.com/outchain/player?type=2&id='+id+'&auto=0&height=66"></iframe>' +
+  	"</div>";
+    var point = new BMap.Point(lng,lat);
+    var marker = new BMap.Marker(point);
+    var infoWindow = new BMap.InfoWindow(sContent);
+    map.addOverlay(marker);
+    marker.addEventListener("click", function(){
+    	   this.openInfoWindow(infoWindow);
+    	   //图片加载完毕重绘infowindow
+    	  //  document.getElementById('imgDemo').onload = function (){
+    		//    infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+    	  //  }
+    	});
+}
+addMusicMarker($(".field-musicid > p").text(),$(".field-lat > p").text(),$(".field-lng > p").text(),
+$(".field-uploaderemail > p").text(),$(".field-uploadtime > p").text(),$(".field-text > div > p").text());
+
+</script>
+{% endblock %}
