@@ -9,5 +9,5 @@ class mapmusic(models.Model):
     uploaderemail = models.EmailField()
     uploadtime = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
-    display = models.BooleanField(default=False,null=False)
+    display = models.BooleanField(default=True,null=False)
     reviewtext = models.TextField()

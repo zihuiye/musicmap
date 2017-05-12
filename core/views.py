@@ -4,6 +4,9 @@ from django.core.urlresolvers import reverse
 from django.conf.urls import url
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth.models import User
+from django.utils import timezone
+import pytz
+
 
 import json
 # from django.core.serializers import serialize
@@ -12,7 +15,6 @@ from .models import mapmusic
 # Create your views here.
 
 def index(request):
-	print(list(mapmusic.objects.values_list()))
 	return render(request,'index.html')
 def music(request):
 	if request.method == 'POST':
@@ -25,7 +27,14 @@ def music(request):
 		print(request.POST)
 		return HttpResponseRedirect(reverse('index'))
 	elif request.method == 'GET':
+		timezone.activate(pytz.timezone("Asia/Shanghai"))
 		music = list(mapmusic.objects.all().values_list())
+		music = list(map(lambda x:x[:4]+(timezone.localtime(x[4]).strftime("%A, %d. %B %Y %I:%M%p"),)+x[5:],music))
 		return HttpResponse(json.dumps(music,cls=DjangoJSONEncoder))
 def test(request):
+	timezone.activate(pytz.timezone("Asia/Shanghai"))
+	music = list(mapmusic.objects.all().values_list())
+	print(list(map(lambda x:x[:4]+(timezone.localtime(x[4]),)+x[5:],music)))
+	print(timezone.get_current_timezone())
+	print(timezone.localtime(timezone.now()))
 	return render(request,'base.html')

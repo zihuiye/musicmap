@@ -9,4 +9,4 @@ class Mapmusic(admin.ModelAdmin):
     def get_readonly_fields(self,request,obj=None):
         if not request.user.is_superuser:
             return ['musicid','lat','lng','uploaderemail','uploadtime','text']
-        # return self.readonly_fields
+        return ['musicid','lat','lng','uploaderemail','uploadtime']
