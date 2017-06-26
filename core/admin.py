@@ -5,8 +5,8 @@ from .models import mapmusic
 
 @admin.register(mapmusic)
 class Mapmusic(admin.ModelAdmin):
-    fields=('display','reviewtext',('musicid','lat','lng'),('uploaderemail','uploadtime'),'text')
+    fields=('display','reviewtext',('musicname','lat','lng'),('uploaderemail','uploadtime'),'text','musicfile')
     def get_readonly_fields(self,request,obj=None):
         if not request.user.is_superuser:
-            return ['musicid','lat','lng','uploaderemail','uploadtime','text']
-        return ['musicid','lat','lng','uploaderemail','uploadtime']
+            return ['musicname','lat','lng','uploaderemail','uploadtime','text','musicfile']
+        return ['musicname','lat','lng','uploaderemail','uploadtime','musicfile']

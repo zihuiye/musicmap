@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from django.conf.urls.static import static
+from django.conf import settings
 from core import views as core_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',core_views.index,name='index'),
     url(r'^music/$',core_views.music),
+    url(r'^email/$',core_views.email),
     url(r'^test/$',core_views.test),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,7 +25,7 @@ SECRET_KEY = '9z4cqb1md6^@je@rf75aj2v0#wr6#f-@aw0as4jk36iv&9h)8p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -119,3 +119,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/zihuiye/django-project/musicmap/media/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.mail.scut.edu.cn'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'ye.zihui'
+EMAIL_HOST_PASSWORD = 'yezihui?037483'
+DEFAULT_FROM_EMAIL = 'ye.zihui@mail.scut.edu.cn'

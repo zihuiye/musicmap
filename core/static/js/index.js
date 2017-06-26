@@ -26,13 +26,14 @@ function checkurl(){
 
 }
 //在地图上添加地标标签
-function addMusicMarker(id,lat,lng,email,datetime,text){
+function addMusicMarker(name,lat,lng,email,datetime,text,filename){
   var sContent =
     "<div>"+
     "<h5>"+"上传者："+email+"</h5>"+
     "<h5>"+"上传时间："+datetime+"</h5>"+
-    "<p>"+"想说的话："+text+"</p>"+
-  	'<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=380 height=86 src="//music.163.com/outchain/player?type=2&id='+id+'&auto=0&height=66"></iframe>' +
+    "<p>"+"留言："+text+"</p>"+
+    "<h4>"+name+"</h4>"+
+  	'<audio src="/media/'+filename+'" controls="controls">' +
   	"</div>";
     var point = new BMap.Point(lng,lat);
     var marker = new BMap.Marker(point);
@@ -81,6 +82,40 @@ for(var i=0; i < txtMenuItem.length; i++){
 }
 map.addContextMenu(menu);
 
+var moved = false;
+var zoomed = false;
+var longpress = false;
+
+map.addEventListener("touchmove",function(e){
+  moved = true;
+});
+
+map.addEventListener("resize",function(e){
+  zoomed = true;
+});
+
+map.addEventListener("touchend",function(e) {
+  if ( longpress && !moved && !zoomed){
+    var geoc = new BMap.Geocoder();
+    geoc.getLocation(e.point, function(rs){
+      var addComp = rs.addressComponents;
+      $("#location").val(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+      $("#lat").val(e.point.lat);
+      $("#lng").val(e.point.lng);
+      console.log(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+      console.log(e.point.lng + "," + e.point.lat);
+    });
+    showModal();
+  }
+  longpress = false;
+  moved = false;
+  zoomed = false;
+});
+
+map.addEventListener("longpress",function(e){
+  longpress=true;
+});
+
 //加载完之后取数据库中的音乐数据并添加到地图中
 $(document).ready(function(){
   $.ajax({url:"music",
@@ -88,7 +123,7 @@ $(document).ready(function(){
     dataType:"json",
     success:function(data){
       for (var i = 0; i < data.length; i++) {
-        addMusicMarker(data[i][0],data[i][1],data[i][2],data[i][3],data[i][4],data[i][5]);
+        addMusicMarker(data[i][1],data[i][2],data[i][3],data[i][4],data[i][5],data[i][6],data[i][9]);
       }
       console.log(data);
     },

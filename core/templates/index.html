@@ -29,7 +29,7 @@
             <h4 class="modal-title" id="exampleModalLabel">在此添加音乐</h4>
           </div>
           <div class="modal-body">
-            <form action="/music/" method="post">
+            <form action="/music/" method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="form-group">
                 <div class="row">
@@ -51,12 +51,17 @@
                 <label for="recipient-name" class="control-label">位置:</label>
                 <input type="text" class="form-control" id="location" disabled>
               </div>
-              <div><h4>由于网易去音乐有些歌有版权保护,所以请先试试能不能播放.</h4></div>
-              <div id="player">
+              <!-- <div><h4>由于网易去音乐有些歌有版权保护,所以请先试试能不能播放.</h4></div> -->
+              <!-- <div id="player"> -->
+              <!-- </div> -->
+              <div class="form-group">
+                <label for="recipient-name" class="control-label">音乐名称:</label>
+                <input type="text" name="musicname" class="form-control" id="musicname"  required>
               </div>
               <div class="form-group">
-                <label for="recipient-name" class="control-label">网易云音乐链接:</label>
-                <input type="text" name="musicurl" class="form-control" id="music-url" onchange="checkurl()" required>
+                <label for="recipient-name" class="control-label">上传:</label>
+                <!-- <input type="text" name="musicurl" class="form-control" id="music-url" onchange="checkurl()" required> -->
+                <input name="musicFile" type="file" id="InputFile">
               </div>
               <div class="form-group">
                 <label for="recipient-name" class="control-label">邮箱:</label>
@@ -97,7 +102,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- BaiduMap API -->
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xgQomeXQjCUiy9ByA6Vbsp9vRvSwGxhn"></script>
-
+    <script type="text/javascript" src="{% static 'js/csrf.js' %}"> </script>
     <script type="text/javascript" src="{% static 'js/index.js' %}"> </script>
   </body>
 </html>
