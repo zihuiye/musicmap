@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#media
+*.mp3
+
 #sqlite3 file
 db.sqlite3
 
